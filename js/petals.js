@@ -14,7 +14,7 @@
 
   /* ================= Peacock feather (real image cut-out) ================= */
   // Put peacock-feather.webp in the assets/ folder next to index.html (same place as the lotus images).
-  const FEATHER_COUNT = (typeof window.FEATHER_COUNT === 'number') ? window.FEATHER_COUNT : 6;
+  const FEATHER_COUNT = (typeof window.FEATHER_COUNT === 'number') ? window.FEATHER_COUNT : 14;
   const FEATHER_SRC = 'assets/peacock-feather.webp';
   const SPR_W = 342, SPR_H = 640;            // natural size of the image
   const EYE_DX = 14, EYE_DY = -130;          // eye position relative to the image centre
@@ -29,8 +29,8 @@
     return {
       k,
       x: Math.random() * W,
-      y: initial ? Math.random() * H : -h - Math.random() * H * .4,
-      vy: (16 + Math.random() * 16) * (0.7 + k * 2),                  // slower than petals
+      y: initial ? Math.random() * H : -h - Math.random() * H * .15,
+      vy: (26 + Math.random() * 24) * (0.7 + k * 2),                  // slower than petals
       sway: 26 + Math.random() * 34, ph: Math.random() * 6.28, sp: .35 + Math.random() * .4,
       flip: Math.random() * 6.28, vf: .5 + Math.random() * .8,        // slow 3D turn
       shim: Math.random() * 6.28, vs: 1.2 + Math.random() * 1.2,      // iridescent shimmer
