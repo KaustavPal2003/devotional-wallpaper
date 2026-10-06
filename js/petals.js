@@ -14,7 +14,7 @@
 
   /* ================= Peacock feather (real image cut-out) ================= */
   // Put peacock-feather.webp in the assets/ folder next to index.html (same place as the lotus images).
-  const FEATHER_COUNT = (typeof window.FEATHER_COUNT === 'number') ? window.FEATHER_COUNT : 14;
+  const featherCount = (typeof FEATHER_COUNT === 'number') ? FEATHER_COUNT : 14;   // optional override in js/config.js
   const FEATHER_SRC = 'assets/peacock-feather.webp';
   const SPR_W = 342, SPR_H = 640;            // natural size of the image
   const EYE_DX = 14, EYE_DY = -130;          // eye position relative to the image centre
@@ -37,7 +37,7 @@
       lean: (Math.random() - .5) * .5                                  // personal tilt
     };
   }
-  const feathers = reduce ? [] : Array.from({ length: FEATHER_COUNT }, () => makeFeather(true));
+  const feathers = reduce ? [] : Array.from({ length: featherCount }, () => makeFeather(true));
 
   function drawFeather(f) {
     ctx.save();
@@ -58,6 +58,34 @@
     ctx.beginPath(); ctx.arc(EYE_DX, EYE_DY, R, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
+
+  /* ================= Bilva patra (বেল পাতা) — three-leaflet leaves ================= */
+  const leafCount = (typeof LEAF_COUNT === 'number') ? LEAF_COUNT : 10;                // optional override in js/config.js
+  const LEAF_SRC = 'assets/bilva-patra.webp';
+  const LEAF_W = 328, LEAF_H = 320;                // natural size of the image
+  const leafImg = new Image();
+  let leafSprites = null;                          // 3 slightly different greens, so the leaves are not all identical
+  leafImg.onload = () => {
+    const tint = f => {
+      const c = document.createElement('canvas'); c.width = LEAF_W; c.height = LEAF_H;
+      const g = c.getContext('2d'); g.filter = f; g.drawImage(leafImg, 0, 0); return c;
+    };
+    leafSprites = [leafImg, tint('brightness(.8) saturate(1.1)'), tint('brightness(1.12) saturate(.95) hue-rotate(-10deg)')];
+  };
+  leafImg.src = LEAF_SRC;
+
+  function makeLeaf(initial) {
+    const h = (Math.min(W, H) / 1080) * (50 + Math.random() * 44);     // on-screen height in px
+    return {
+      k: h / LEAF_H, h, v: (Math.random() * 3) | 0,
+      x: Math.random() * W, y: initial ? Math.random() * H : -h - Math.random() * H * .25,
+      vy: (30 + Math.random() * 34) * (0.6 + h / 110),
+      sway: 30 + Math.random() * 50, ph: Math.random() * 6.28, sp: .4 + Math.random() * .7,
+      rot: Math.random() * 6.28, vr: (Math.random() - .5) * 1.3,          // slow tumble
+      flip: Math.random() * 6.28, vf: .8 + Math.random() * 1.6            // turns face-on / edge-on as it falls
+    };
+  }
+  const leaves = reduce ? [] : Array.from({ length: leafCount }, () => makeLeaf(true));
 
   /* ================= Petals (unchanged) ================= */
   function make(initial) {
@@ -91,6 +119,17 @@
       ctx.bezierCurveTo(p.s * .9, -p.s * .5, p.s * .8, p.s * .6, 0, p.s);
       ctx.bezierCurveTo(-p.s * .8, p.s * .6, -p.s * .9, -p.s * .5, 0, -p.s);
       ctx.fill();
+      ctx.restore();
+    }
+    // bilva patra leaves
+    if (leafSprites) for (const l of leaves) {
+      l.y += l.vy * dt; l.ph += l.sp * dt; l.x += Math.sin(l.ph) * l.sway * dt;
+      l.rot += l.vr * dt; l.flip += l.vf * dt;
+      if (l.y > H + l.h) Object.assign(l, makeLeaf(false));
+      ctx.save();
+      ctx.translate(l.x, l.y); ctx.rotate(l.rot);
+      ctx.scale(l.k, l.k * (Math.abs(Math.cos(l.flip)) * .65 + .35));
+      ctx.drawImage(leafSprites[l.v], -LEAF_W / 2, -LEAF_H / 2, LEAF_W, LEAF_H);
       ctx.restore();
     }
     // peacock feathers, drawn over the petals

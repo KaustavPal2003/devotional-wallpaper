@@ -30,6 +30,8 @@ const GAYATRI_LOOP   = true;                  // keep repeating until you click 
 const GAYATRI_VOLUME = 0.8;                   // 0 to 1
 const CONCH_FILE     = "recording/shankh.mp3";                    // your conch recording, saved in this folder
 
+const FEATHER_COUNT = 15;
+const LEAF_COUNT = 20;
 const PETAL_COUNT   = 55;           // fewer = lighter on the PC
 const GARLAND_HANG = null;          // null = the garland hangs down to just above the taskbar. Or give a number (% of screen height below the bells) to set the depth yourself
 /* ===================================================== */
