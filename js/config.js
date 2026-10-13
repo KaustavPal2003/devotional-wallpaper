@@ -25,9 +25,23 @@ const AARTI_SOUND         = true;  // true = bells also ring with sound during t
 const BELL_FILE           = "recording/temple.mp3";  // your bell recording, saved in this folder
 const BELL_VOLUME         = 0.8;           // 0 to 1
 
-const GAYATRI_FILE   = "recording/Gayatri Mantra.mp3";  // your recording, saved in this folder. If it is missing, a Hindi voice on your PC reads the mantra instead
-const GAYATRI_LOOP   = true;                  // keep repeating until you click Om again
-const GAYATRI_VOLUME = 0.8;                   // 0 to 1
+// ---- Songs on the Om button (the screen stays exactly as clean as before: still just Om + conch) ----
+//   click Om                    = play / stop the current song
+//   HOLD Om for about half a second (or right-click) = a small list pops up; tap a song to play it
+// To add a song: put the file in the "recording" folder and add one line to SONGS. Nothing else to change.
+// "speak" is optional: if that file is missing, a Hindi voice on your PC reads this text instead.
+const SONGS = [
+  { name: "Gayatri Mantra", file: "recording/Gayatri Mantra.mp3",
+    speak: "ॐ भूर्भुवः स्वः। तत्सवितुर्वरेण्यं। भर्गो देवस्य धीमहि। धियो यो नः प्रचोदयात्॥" },
+  { name: "Aigiri Nandini", file: "recording/Aigiri_Nandini_Rajalakshmee.mp3", 
+    speak: "अयि गिरिनन्दिनि नन्दितमेदिनि विश्वविनोदिनि नन्दिनुते। गिरिवरविन्ध्यशिरोऽधिनिवासिनि विष्णुविलासिनि जिष्णुनुते॥" },
+  { name: "Adharam_Madhuram", file: "recording/Adharam-Madhuram.mpeg"},  
+  // { name: "Hanuman Chalisa",        file: "recording/hanuman-chalisa.mp3" },
+  // { name: "Om Namah Shivaya",       file: "recording/om-namah-shivaya.mp3" },
+];
+const GAYATRI_LOOP   = true;                  // keep repeating the current song until you click Om again
+const SONG_PLAYLIST  = false;                 // true = play the songs one after another, forever (ignores the repeat setting above)
+const GAYATRI_VOLUME = 0.8;                   // 0 to 1 (applies to every song)
 const CONCH_FILE     = "recording/shankh.mp3";                    // your conch recording, saved in this folder
 
 const FEATHER_COUNT = 15;
